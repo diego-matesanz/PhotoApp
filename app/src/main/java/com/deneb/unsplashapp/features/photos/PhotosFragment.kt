@@ -3,12 +3,10 @@ package com.deneb.unsplashapp.features.photos
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import com.deneb.unsplashapp.R
 import com.deneb.unsplashapp.core.exception.Failure
 import com.deneb.unsplashapp.core.extensions.failure
 import com.deneb.unsplashapp.core.extensions.observe
@@ -45,8 +43,7 @@ class PhotosFragment : BaseFragment<FragmentPhotosBinding>(FragmentPhotosBinding
         binding.photoList.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         binding.photoList.adapter = photosAdapter
         photosAdapter.clickListener = { photo ->
-            val bundle = bundleOf("photo" to photo)
-            findNavController().navigate(R.id.detailPhotoFragment, bundle)
+            findNavController().navigate(PhotosFragmentDirections.actionPhotosFragmentToDetailPhotoFragment(photo.id))
         }
     }
 
@@ -66,12 +63,12 @@ class PhotosFragment : BaseFragment<FragmentPhotosBinding>(FragmentPhotosBinding
     private fun renderFailure(failure: Failure?) {
         when (failure) {
             is Failure.NetworkConnection -> Log.e(
-                DetailPhotoFragment::class.java.canonicalName,
+                PhotosFragment::class.java.canonicalName,
                 "Network Connection Error"
             )
 
-            is Failure.ServerError -> Log.e(DetailPhotoFragment::class.java.canonicalName, "Server Error")
-            else -> Log.e(DetailPhotoFragment::class.java.canonicalName, "Error")
+            is Failure.ServerError -> Log.e(PhotosFragment::class.java.canonicalName, "Server Error")
+            else -> Log.e(PhotosFragment::class.java.canonicalName, "Error")
         }
     }
 
@@ -80,7 +77,7 @@ class PhotosFragment : BaseFragment<FragmentPhotosBinding>(FragmentPhotosBinding
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
                 if (!binding.photoList.canScrollVertically(1)) {
-                    Log.d(DetailPhotoFragment::class.java.canonicalName, "Load new photos")
+                    Log.d(PhotosFragment::class.java.canonicalName, "Load new photos")
                     loadPhotoList()
                 }
             }

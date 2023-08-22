@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.navArgs
 import com.deneb.unsplashapp.core.exception.Failure
 import com.deneb.unsplashapp.core.extensions.failure
 import com.deneb.unsplashapp.core.extensions.loadFromUrl
@@ -11,13 +12,13 @@ import com.deneb.unsplashapp.core.extensions.observe
 import com.deneb.unsplashapp.core.platform.BaseFragment
 import com.deneb.unsplashapp.databinding.FragmentDetailPhotoBinding
 import com.deneb.unsplashapp.features.photos.model.UnsplashDetailView
-import com.deneb.unsplashapp.features.photos.model.UnsplashItemView
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class DetailPhotoFragment :
     BaseFragment<FragmentDetailPhotoBinding>(FragmentDetailPhotoBinding::inflate) {
     private val photoDetailsViewModel by viewModels<PhotosDetailViewModel>()
+    private val args: DetailPhotoFragmentArgs by navArgs()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,9 +35,7 @@ class DetailPhotoFragment :
 
     private fun loadPhotoDetail() {
         showProgress()
-        photoDetailsViewModel.loadPhotoDetails(
-            arguments?.getParcelable<UnsplashItemView>("photo")?.id ?: ""
-        )
+        photoDetailsViewModel.loadPhotoDetails(args.id)
     }
 
     private fun renderPhotoDetail(unsplashDetailView: UnsplashDetailView?) {
@@ -61,8 +60,13 @@ class DetailPhotoFragment :
     }
 
     private fun renderFailure(failure: Failure?) {
+        Log.e(DetailPhotoFragment::class.java.canonicalName, "Failure: $failure")
         when (failure) {
-            is Failure.NetworkConnection -> Log.e(DetailPhotoFragment::class.java.canonicalName, "Network Connection Error")
+            is Failure.NetworkConnection -> Log.e(
+                DetailPhotoFragment::class.java.canonicalName,
+                "Network Connection Error"
+            )
+
             is Failure.ServerError -> Log.e(DetailPhotoFragment::class.java.canonicalName, "Server Error")
             else -> Log.e(DetailPhotoFragment::class.java.canonicalName, "Error")
         }
