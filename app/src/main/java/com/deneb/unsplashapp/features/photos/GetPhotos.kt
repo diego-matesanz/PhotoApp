@@ -5,6 +5,6 @@ import com.deneb.unsplashapp.features.photos.model.UnsplashItemView
 import javax.inject.Inject
 
 class GetPhotos
-@Inject constructor(private val photosRepository: PhotosRepository): UseCase<List<UnsplashItemView>, UseCase.None>() {
-    override suspend fun run(params: None) = photosRepository.photos()
+@Inject constructor(private val photosRepository: PhotosRepository): UseCase<List<UnsplashItemView>, Params>() {
+    override suspend fun run(params: Params) = photosRepository.photos(params.id)
 }

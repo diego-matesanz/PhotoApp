@@ -6,10 +6,11 @@ import com.deneb.unsplashapp.utils.ConstantsUtil
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
+import retrofit2.http.Url
 
 internal interface PhotosApi {
-    @GET("photos/?client_id=${ConstantsUtil.UNSPLASH_API_KEY}")
-    fun photos(): Call<UnsplashResponse>
+    @GET
+    fun photos(@Url url: String): Call<UnsplashResponse>
 
     @GET("photos/{id}/?client_id=${ConstantsUtil.UNSPLASH_API_KEY}")
     fun detailPhoto(@Path("id")id: String): Call<UnsplashDetailResponse>

@@ -6,6 +6,7 @@ import android.view.View
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.deneb.unsplashapp.R
 import com.deneb.unsplashapp.core.exception.Failure
@@ -14,7 +15,6 @@ import com.deneb.unsplashapp.core.extensions.observe
 import com.deneb.unsplashapp.core.platform.BaseFragment
 import com.deneb.unsplashapp.databinding.FragmentPhotosBinding
 import com.deneb.unsplashapp.features.photos.model.UnsplashItemView
-import com.deneb.unsplashapp.features.photos.model.UnsplashResponseItem
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -38,6 +38,7 @@ class PhotosFragment : BaseFragment<FragmentPhotosBinding>(FragmentPhotosBinding
         super.onViewCreated(view, savedInstanceState)
         initializeView()
         loadPhotoList()
+        setRecyclerViewScrollListener()
     }
 
     private fun initializeView() {
@@ -55,16 +56,35 @@ class PhotosFragment : BaseFragment<FragmentPhotosBinding>(FragmentPhotosBinding
     }
 
     private fun renderPhotoList(photos: List<UnsplashItemView>?) {
-        photosAdapter.collection = photos.orEmpty()
+        val mutableList = mutableListOf<UnsplashItemView>()
+        mutableList.addAll(photosAdapter.collection)
+        mutableList.addAll(photos.orEmpty())
+        photosAdapter.collection = mutableList
         hideProgress()
     }
 
     private fun renderFailure(failure: Failure?) {
         when (failure) {
-            is Failure.NetworkConnection -> Log.e(DetailPhotoFragment::class.java.canonicalName, "Network Connection Error")
+            is Failure.NetworkConnection -> Log.e(
+                DetailPhotoFragment::class.java.canonicalName,
+                "Network Connection Error"
+            )
+
             is Failure.ServerError -> Log.e(DetailPhotoFragment::class.java.canonicalName, "Server Error")
             else -> Log.e(DetailPhotoFragment::class.java.canonicalName, "Error")
         }
+    }
+
+    private fun setRecyclerViewScrollListener() {
+        binding.photoList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                if (!binding.photoList.canScrollVertically(1)) {
+                    Log.d(DetailPhotoFragment::class.java.canonicalName, "Load new photos")
+                    loadPhotoList()
+                }
+            }
+        })
     }
 
 }
