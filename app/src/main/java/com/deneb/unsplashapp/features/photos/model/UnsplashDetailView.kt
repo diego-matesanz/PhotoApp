@@ -3,7 +3,7 @@ package com.deneb.unsplashapp.features.photos.model
 data class UnsplashDetailView(
     val id: String = "",
     val description: String? = "",
-    val altDescription: String = "",
+    val altDescription: String? = "",
     val image: String = "",
     val likes: Int = 0,
     val exif: Exif = Exif(),
