@@ -10,7 +10,7 @@ class PhotosService
 
     private val photosApi by lazy { retrofit.create(PhotosApi::class.java) }
 
-    override fun photos() = photosApi.photos()
+    override fun photos(url: String) = photosApi.photos(url)
     override fun detailPhoto(id: String) = photosApi.detailPhoto(id)
 
 }
