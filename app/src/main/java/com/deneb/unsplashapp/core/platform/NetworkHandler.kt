@@ -17,7 +17,6 @@ package com.deneb.unsplashapp.core.platform
 
 import android.content.Context
 import android.net.NetworkCapabilities
-import android.os.Build
 import com.deneb.unsplashapp.core.extensions.connectivityManager
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
