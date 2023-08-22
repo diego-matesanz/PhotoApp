@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
+import com.deneb.unsplashapp.R
 import com.deneb.unsplashapp.core.exception.Failure
 import com.deneb.unsplashapp.core.extensions.failure
 import com.deneb.unsplashapp.core.extensions.loadFromUrl
@@ -47,15 +48,19 @@ class DetailPhotoFragment :
 
     private fun bindCamera(unsplashDetailView: UnsplashDetailView?) {
         binding.cameraModel.text = unsplashDetailView?.exif?.model
-        binding.cameraIso.text = "ISO: ${unsplashDetailView?.exif?.iso}"
-        binding.cameraAperture.text = "Aperture: ${unsplashDetailView?.exif?.aperture}"
+        binding.cameraIso.text = requireContext().getString(R.string.details_photo_iso, unsplashDetailView?.exif?.iso)
+        binding.cameraAperture.text =
+            requireContext().getString(R.string.details_photo_aperture, unsplashDetailView?.exif?.aperture)
     }
 
     private fun bindUser(unsplashDetailView: UnsplashDetailView?) {
         binding.imageDetail.loadFromUrl(unsplashDetailView?.image)
         binding.circleImageProfile.loadFromUrl(unsplashDetailView?.user?.profileImage?.small)
-        binding.profileName.text =
-            "${unsplashDetailView?.user?.firstName} ${unsplashDetailView?.user?.lastName}"
+        binding.profileName.text = requireContext().getString(
+            R.string.details_photo_name,
+            unsplashDetailView?.user?.firstName,
+            unsplashDetailView?.user?.lastName
+        )
         binding.instagramName.text = unsplashDetailView?.user?.instagramUsername
     }
 

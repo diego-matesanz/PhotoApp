@@ -5,10 +5,8 @@ import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import androidx.annotation.LayoutRes
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
@@ -44,9 +42,9 @@ internal infix fun View.onClick(function: () -> Unit) {
 }
 
 fun ImageView.loadFromDrawable(drawable: Int) {
-/*    val options = RequestOptions()
-    options.fitCenter()
-    options.centerCrop()*/
+    /*    val options = RequestOptions()
+        options.fitCenter()
+        options.centerCrop()*/
 
     Glide.with(this.context.applicationContext)
         .load(drawable)
@@ -77,9 +75,9 @@ fun ImageView.loadFromDrawable(drawable: Int) {
 }
 
 fun ImageView.loadFromDrawable(drawable: Int, requestListener: RequestListener<Drawable>) {
-/*    val options = RequestOptions()
-    options.fitCenter()
-    options.centerCrop()*/
+    /*    val options = RequestOptions()
+        options.fitCenter()
+        options.centerCrop()*/
 
     Glide.with(this.context.applicationContext)
         .load(drawable)
@@ -90,9 +88,9 @@ fun ImageView.loadFromDrawable(drawable: Int, requestListener: RequestListener<D
 }
 
 fun ImageView.loadFromBitmap(bitmap: Bitmap) {
-/*    val options = RequestOptions()
-    options.fitCenter()
-    options.centerCrop()*/
+    /*    val options = RequestOptions()
+        options.fitCenter()
+        options.centerCrop()*/
 
     Glide.with(this.context.applicationContext)
         .load(bitmap)
